@@ -2,7 +2,12 @@
 import React, { useState } from "react";
 import "@copilotkit/react-ui/styles.css";
 import "./style.css";
-import { CopilotKit, useCoAgent, useCopilotAction, useCopilotChat } from "@copilotkit/react-core";
+import {
+  CopilotKit,
+  useCoAgent,
+  useCopilotAction,
+  useCopilotChat,
+} from "@copilotkit/react-core";
 import { CopilotChat } from "@copilotkit/react-ui";
 
 interface AgenticChatProps {
@@ -27,8 +32,11 @@ const AgenticChat: React.FC<AgenticChatProps> = ({ params }) => {
 };
 
 const Chat = () => {
-  const [background, setBackground] = useState<string>("--copilot-kit-background-color");
+  const [background, setBackground] = useState<string>(
+    "--copilot-kit-background-color"
+  );
 
+  // Can there be more than one of these?
   useCopilotAction({
     name: "change_background",
     description:
@@ -50,7 +58,10 @@ const Chat = () => {
   });
 
   return (
-    <div className="flex justify-center items-center h-full w-full" style={{ background }}>
+    <div
+      className="flex justify-center items-center h-full w-full"
+      style={{ background }}
+    >
       <div className="h-full w-full md:w-8/10 md:h-8/10 rounded-lg">
         <CopilotChat
           className="h-full rounded-2xl"
