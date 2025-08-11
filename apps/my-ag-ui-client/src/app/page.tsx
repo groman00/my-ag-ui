@@ -1,13 +1,64 @@
 "use client";
+import React, { useState } from "react";
+import "@copilotkit/react-ui/styles.css";
+import "./style.css";
+import { CopilotKit, useCopilotAction } from "@copilotkit/react-core";
+import { CopilotChat } from "@copilotkit/react-ui";
 
-import React from "react";
+// interface AgenticChatProps {}
 
-export default function Home() {
+const AgenticChat: React.FC = () => {
   return (
-    <div className="flex-1 h-screen w-full flex flex-col items-center justify-center p-8">
-      <h1 className="text-base font-normal text-muted-foreground mb-4">
-        Select an integration to get started
-      </h1>
+    <CopilotKit
+      runtimeUrl={`/api/chat`}
+      showDevConsole={true}
+      // agent lock to the relevant agent
+      agent="agentic_chat"
+    >
+      <Chat />
+    </CopilotKit>
+  );
+};
+
+const Chat = () => {
+  const [background, setBackground] = useState<string>(
+    "--copilot-kit-background-color"
+  );
+
+  // Can there be more than one of these?
+  useCopilotAction({
+    name: "change_background",
+    description:
+      "Change the background color of the chat. Can be anything that the CSS background attribute accepts. Regular colors, linear of radial gradients etc.",
+    parameters: [
+      {
+        name: "background",
+        type: "string",
+        description: "The background. Prefer gradients.",
+      },
+    ],
+    handler: ({ background }) => {
+      setBackground(background);
+      return {
+        status: "success",
+        message: `Background changed to ${background}`,
+      };
+    },
+  });
+
+  return (
+    <div
+      className="flex justify-center items-center h-full w-full"
+      style={{ background }}
+    >
+      <div className="h-full w-full md:w-8/10 md:h-8/10 rounded-lg">
+        <CopilotChat
+          className="h-full rounded-2xl"
+          labels={{ initial: "Hi, I'm an agent. Want to chat?" }}
+        />
+      </div>
     </div>
   );
-}
+};
+
+export default AgenticChat;

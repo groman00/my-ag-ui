@@ -1,69 +1,36 @@
-# AG-UI Protocol Dojo
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-A modern, interactive viewer for exploring CopilotKit agent demos with a clean, responsive UI and dark/light theme support.
+## Getting Started
 
-## Overview
-
-The Demo Viewer provides a centralized interface for browsing, viewing, and exploring the source code of various CopilotKit agent demos. It features:
-
-- Clean, modern UI with dark/light theme support
-- Interactive demo previews
-- Source code exploration with syntax highlighting
-- Organized demo listing with tags and descriptions
-- LLM provider selection
-
-## Development Setup
-
-To run the Demo Viewer locally for development, follow these steps:
-
-### Install dependencies
+First, run the development server:
 
 ```bash
-brew install protobuf
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-```bash
-npm i turbo
-```
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-```bash
-curl -fsSL https://get.pnpm.io/install.sh | sh -
-```
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-### Run the Demo Viewer
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-In a new terminal, navigate to the project root and start the Demo Viewer:
+## Learn More
 
-```bash
-pnpm install
-pnpm run dev
-```
+To learn more about Next.js, take a look at the following resources:
 
-The Demo Viewer should now be running at [http://localhost:3000](http://localhost:3000).
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-### Adding a new integration
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-On a fresh clone of this repo, you'll find that we've created a mock agent that represents all of the events needed to create an ACP compliant agent. To extend this to support
-your own integration, you'll need to:
+## Deploy on Vercel
 
-1. Edit `src/examples/your-custom-http-agent.ts` to implement your own agent.
-2. Alternatively, edit `src/examples/your-custom-agent.ts` to implement a non http based integration.
-3. Read `src/app/api/sse/agentic_chat/route.ts` to understand what events need to be emitted on the agent side.
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-## Project Structure
-
-- `src/examples` - Example agents
-- `src/app` - Next.js app router files
-- `src/components` - Reusable UI components
-- `src/demos` - Demo configuration and utilities
-- `src/hooks` - Custom React hooks
-- `src/types` - TypeScript type definitions
-- `public` - Static assets
-
-## Technologies
-
-- Next.js
-- React
-- TypeScript
-- Tailwind CSS
-- CopilotKit
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
