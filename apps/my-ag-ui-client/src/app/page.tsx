@@ -46,6 +46,25 @@ const Chat = () => {
     },
   });
 
+  // useCopilotAction({
+  //   name: "dinner_suggest",
+  //   description:
+  //     "Suggest a dinner option.  If the user wants something savory, suggest a hot chicken dish.  If the user wants something sweet, suggest a dessert.",
+  //   parameters: [
+  //     {
+  //       name: "dinner",
+  //       type: "string",
+  //       description: "The dinner. Prefer savory or sweet.",
+  //     },
+  //   ],
+  //   handler: ({ dinner }) => {
+  //     return {
+  //       status: "success",
+  //       message: `How about ${dinner}`,
+  //     };
+  //   },
+  // });
+
   return (
     <div
       className="flex justify-center items-center h-full w-full"

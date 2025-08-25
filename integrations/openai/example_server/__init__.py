@@ -28,6 +28,9 @@ client = OpenAI(
 
 @app.post("/")
 async def agentic_chat_endpoint(input_data: RunAgentInput, request: Request):
+    print("Input data: ", input_data)
+    # print("Request: ", request)
+
     """Agentic chat endpoint"""
     # Get the accept header from the request
     accept_header = request.headers.get("accept")
@@ -37,7 +40,6 @@ async def agentic_chat_endpoint(input_data: RunAgentInput, request: Request):
 
     async def event_generator():
         try:
-            print("Input data: ", input_data)
             # Send run started event
             yield encoder.encode(
             RunStartedEvent(

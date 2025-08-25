@@ -5,14 +5,13 @@ import { google } from "@ai-sdk/google";
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
+  const json = await req.json();
+  console.log({ request: json });
   const {
     messages,
     model,
     webSearch,
-  }: { messages: UIMessage[]; model: string; webSearch: boolean } =
-    await req.json();
-
-  console.log(JSON.stringify({ messages, model, webSearch }));
+  }: { messages: UIMessage[]; model: string; webSearch: boolean } = json;
 
   const result = streamText({
     // model: webSearch ? "perplexity/sonar" : model,
