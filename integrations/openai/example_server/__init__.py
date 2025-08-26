@@ -7,6 +7,7 @@ import uuid
 import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.responses import StreamingResponse
+from fastapi.middleware.cors import CORSMiddleware
 from ag_ui.core import (
     RunAgentInput,
     EventType,
@@ -20,6 +21,15 @@ from openai import OpenAI
 from .config import settings
 
 app = FastAPI(title="AG-UI Endpoint")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3002"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 client = OpenAI(
     api_key=settings.gemini_api_key,
@@ -129,6 +139,13 @@ async def agentic_chat_endpoint(input_data: RunAgentInput, request: Request):
         event_generator(),
         media_type=encoder.get_content_type()
     )
+
+# @app.post("/copilotkit")
+# async def testing_langchain(request: Request):
+#     json = await request.json()
+#     print("Input data: ", json)
+
+
 
 def main():
     """Run the uvicorn server."""

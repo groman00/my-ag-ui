@@ -4,6 +4,14 @@ import { google } from "@ai-sdk/google";
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
+// Custom provider (ie hit our own API), instead of using a provider like OpenAI or Google
+// const provider = createOpenAICompatible({
+//   name: 'provider-name',
+//   apiKey: process.env.PROVIDER_API_KEY,
+//   baseURL: 'https://api.provider.com/v1',
+//   includeUsage: true, // Include usage information in streaming responses
+// });
+
 export async function POST(req: Request) {
   const json = await req.json();
   console.log({ request: json });
