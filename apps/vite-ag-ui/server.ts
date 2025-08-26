@@ -7,7 +7,7 @@ import {
 import { HttpAgent } from "@ag-ui/client";
 
 const app = express();
-const port = 8001;
+const port = 3002;
 
 app.use(express.static("dist"));
 

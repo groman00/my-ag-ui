@@ -6,7 +6,7 @@ function App() {
   return (
     <CopilotKit
       // runtimeUrl={`/api/chat`}
-      runtimeUrl="http://localhost:8001/runtime"
+      runtimeUrl="http://localhost:3002/runtime"
       showDevConsole={true}
       // agent lock to the relevant agent
       agent="agentic_chat"
