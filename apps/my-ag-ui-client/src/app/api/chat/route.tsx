@@ -12,6 +12,7 @@ export async function POST(request: NextRequest) {
   const runtime = new CopilotRuntime({
     agents: {
       agentic_chat: new HttpAgent({ url: "http://localhost:8000/" }),
+      // agentic_chat: new HttpAgent({ url: "http://localhost:8001/" }),
     },
   });
   const { handleRequest } = copilotRuntimeNextJSAppRouterEndpoint({
