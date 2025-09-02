@@ -24,6 +24,7 @@ export async function POST(req: Request) {
   const result = streamText({
     // model: webSearch ? "perplexity/sonar" : model,
     model: google("gemini-2.5-flash"),
+    // https://github.com/vercel/ai/blob/main/packages/ai/src/ui/convert-to-model-messages.ts#L30
     messages: convertToModelMessages(messages),
     system:
       // "You are a helpful assistant that can answer questions and help with tasks",

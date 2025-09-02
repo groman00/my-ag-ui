@@ -14,7 +14,7 @@ app.use(express.static("dist"));
 app.post("/runtime", (req, res) => {
   const runtime = new CopilotRuntime({
     agents: {
-      agentic_chat: new HttpAgent({ url: "http://localhost:8000/" }),
+      agentic_chat: new HttpAgent({ url: "http://localhost:8001/" }),
     },
   });
   const handler = copilotRuntimeNodeHttpEndpoint({

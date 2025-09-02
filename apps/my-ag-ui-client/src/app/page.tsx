@@ -25,7 +25,8 @@ const Chat = () => {
     "--copilot-kit-background-color"
   );
 
-  // Can there be more than one of these?
+  // Tools
+  // There can be more than one of these
   useCopilotAction({
     name: "change_background",
     description:
@@ -46,24 +47,24 @@ const Chat = () => {
     },
   });
 
-  // useCopilotAction({
-  //   name: "dinner_suggest",
-  //   description:
-  //     "Suggest a dinner option.  If the user wants something savory, suggest a hot chicken dish.  If the user wants something sweet, suggest a dessert.",
-  //   parameters: [
-  //     {
-  //       name: "dinner",
-  //       type: "string",
-  //       description: "The dinner. Prefer savory or sweet.",
-  //     },
-  //   ],
-  //   handler: ({ dinner }) => {
-  //     return {
-  //       status: "success",
-  //       message: `How about ${dinner}`,
-  //     };
-  //   },
-  // });
+  useCopilotAction({
+    name: "dinner_suggest",
+    description:
+      "Suggest a dinner option.  If the user wants something savory, suggest a hot chicken dish.  If the user wants something sweet, suggest a dessert.",
+    parameters: [
+      {
+        name: "dinner",
+        type: "string",
+        description: "The dinner. Prefer savory or sweet.",
+      },
+    ],
+    handler: ({ dinner }) => {
+      return {
+        status: "success",
+        message: `How about ${dinner}`,
+      };
+    },
+  });
 
   return (
     <div
