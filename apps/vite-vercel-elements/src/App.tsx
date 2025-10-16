@@ -33,8 +33,16 @@ import {
   PromptInputToolbar,
   PromptInputTools,
 } from "./components/prompt-input";
-import { GlobeIcon } from "lucide-react";
-import { DefaultChatTransport } from "ai";
+import {
+  CopyIcon,
+  GlobeIcon,
+  RefreshCcwIcon,
+  ThumbsDownIcon,
+  ThumbsUpIcon,
+} from "lucide-react";
+import { DefaultChatTransport, type SourceUrlUIPart } from "ai";
+import { mockMessages } from "./mockMessages";
+import { Action, Actions } from "./components/actions";
 
 const models = [
   {
@@ -53,8 +61,21 @@ const ChatBotDemo = () => {
   const [webSearch, setWebSearch] = useState(false);
   const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
-      api: "http://localhost:8001/chat",
+      // api: "http://localhost:8001/chat",
+      api: "http://localhost:8000/api/chat",
+      headers: {
+        Authorization: "dev.dev.dev",
+      },
+      prepareSendMessagesRequest: ({ id, messages }) => {
+        return {
+          body: {
+            id,
+            message: messages[messages.length - 1], // Send only the last message object
+          },
+        };
+      },
     }),
+    // messages: mockMessages,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -73,42 +94,50 @@ const ChatBotDemo = () => {
     }
   };
 
+  const actions = [
+    {
+      icon: RefreshCcwIcon,
+      label: "Retry",
+      onClick: () => {},
+    },
+    {
+      icon: ThumbsUpIcon,
+      label: "Like",
+      onClick: () => {},
+    },
+
+    {
+      icon: ThumbsDownIcon,
+      label: "Dislike",
+      onClick: () => {},
+    },
+    {
+      icon: CopyIcon,
+      label: "Copy",
+      onClick: () => {},
+    },
+    // {
+    //   icon: ShareIcon,
+    //   label: 'Share',
+    //   onClick: () => handleShare(),
+    // },
+  ];
+
   return (
-    <div className="max-w-4xl mx-auto p-6 relative size-full h-screen">
+    <div className="relative size-full h-screen">
       <div className="flex flex-col h-full">
-        <Conversation className="h-full">
+        <Conversation className="relative h-full">
           <ConversationContent>
             {messages.map((message) => (
               <div key={message.id}>
-                {message.role === "assistant" && (
-                  <Sources>
-                    {message.parts.map((part, i) => {
-                      switch (part.type) {
-                        case "source-url":
-                          return (
-                            <>
-                              <SourcesTrigger
-                                count={
-                                  message.parts.filter(
-                                    (part) => part.type === "source-url"
-                                  ).length
-                                }
-                              />
-                              <SourcesContent key={`${message.id}-${i}`}>
-                                <Source
-                                  key={`${message.id}-${i}`}
-                                  href={part.url}
-                                  title={part.url}
-                                />
-                              </SourcesContent>
-                            </>
-                          );
-                      }
-                    })}
-                  </Sources>
-                )}
-                <Message from={message.role} key={message.id}>
-                  <MessageContent>
+                <Message
+                  from={message.role}
+                  key={message.id}
+                  className={`flex flex-col gap-2 ${
+                    message.role === "assistant" ? "items-start" : "items-end"
+                  }`}
+                >
+                  <MessageContent className="agent-chat-messages">
                     {message.parts.map((part, i) => {
                       switch (part.type) {
                         case "text":
@@ -133,55 +162,95 @@ const ChatBotDemo = () => {
                       }
                     })}
                   </MessageContent>
+                  {message.role === "assistant" && (
+                    <Actions className="mt-2">
+                      {actions.map((action) => (
+                        <Action key={action.label} label={action.label}>
+                          <action.icon className="size-4" />
+                        </Action>
+                      ))}
+                    </Actions>
+                  )}
                 </Message>
+                {message.role === "assistant" && (
+                  <MessageSources
+                    sources={message.parts.filter(
+                      (part) => part.type === "source-url"
+                    )}
+                  />
+                )}
               </div>
             ))}
             {status === "submitted" && <Loader />}
           </ConversationContent>
           <ConversationScrollButton />
         </Conversation>
-
-        <PromptInput onSubmit={handleSubmit} className="mt-4">
-          <PromptInputTextarea
-            onChange={(e) => setInput(e.target.value)}
-            value={input}
-          />
-          <PromptInputToolbar>
-            <PromptInputTools>
-              <PromptInputButton
-                variant={webSearch ? "default" : "ghost"}
-                onClick={() => setWebSearch(!webSearch)}
-              >
-                <GlobeIcon size={16} />
-                <span>Search</span>
-              </PromptInputButton>
-              <PromptInputModelSelect
-                onValueChange={(value) => {
-                  setModel(value);
-                }}
-                value={model}
-              >
-                <PromptInputModelSelectTrigger>
-                  <PromptInputModelSelectValue />
-                </PromptInputModelSelectTrigger>
-                <PromptInputModelSelectContent>
-                  {models.map((model) => (
-                    <PromptInputModelSelectItem
-                      key={model.value}
-                      value={model.value}
-                    >
-                      {model.name}
-                    </PromptInputModelSelectItem>
-                  ))}
-                </PromptInputModelSelectContent>
-              </PromptInputModelSelect>
-            </PromptInputTools>
-            <PromptInputSubmit disabled={!input} status={status} />
-          </PromptInputToolbar>
-        </PromptInput>
+        <div className="m-4">
+          <PromptInput onSubmit={handleSubmit}>
+            <PromptInputTextarea
+              onChange={(e) => setInput(e.target.value)}
+              value={input}
+            />
+            <PromptInputToolbar className="justify-end">
+              {/* <PromptInputTools>
+                <PromptInputButton
+                  variant={webSearch ? "default" : "ghost"}
+                  onClick={() => setWebSearch(!webSearch)}
+                >
+                  <GlobeIcon size={16} />
+                  <span>Search</span>
+                </PromptInputButton>
+                <PromptInputModelSelect
+                  onValueChange={(value) => {
+                    setModel(value);
+                  }}
+                  value={model}
+                >
+                  <PromptInputModelSelectTrigger>
+                    <PromptInputModelSelectValue />
+                  </PromptInputModelSelectTrigger>
+                  <PromptInputModelSelectContent>
+                    {models.map((model) => (
+                      <PromptInputModelSelectItem
+                        key={model.value}
+                        value={model.value}
+                      >
+                        {model.name}
+                      </PromptInputModelSelectItem>
+                    ))}
+                  </PromptInputModelSelectContent>
+                </PromptInputModelSelect>
+              </PromptInputTools> */}
+              <PromptInputSubmit disabled={!input} status={status} />
+            </PromptInputToolbar>
+          </PromptInput>
+        </div>
       </div>
     </div>
   );
 };
+
+interface MessageSourcesProps {
+  sources: SourceUrlUIPart[];
+}
+function MessageSources({ sources }: MessageSourcesProps) {
+  if (!sources.length) return null;
+  return (
+    <Sources>
+      <>
+        <SourcesTrigger count={sources.length} />
+        <SourcesContent>
+          {sources.map((source) => (
+            <Source
+              key={source.sourceId}
+              href={source.url}
+              title={source.url}
+            />
+          ))}
+        </SourcesContent>
+      </>
+    </Sources>
+  );
+}
 
 export default ChatBotDemo;
